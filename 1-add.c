@@ -10,7 +10,10 @@ void addnode(stack_t **head, int n)
 
 	new = malloc(sizeof(stack_t));
 	if (!new)
+	{
 		perror("Memory Allocation");
+		exit(0);
+	}
 	if (temp != NULL)
 		temp->prev = new;
 	new->n = n;

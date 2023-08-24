@@ -65,5 +65,10 @@ void freestack(stack_t *head);
 void addnode(stack_t **head, int n);
 void f_push(stack_t **head, unsigned int count);
 void f_pall(stack_t **head, unsigned int count);
+void f_pop(stack_t **head, unsigned int count);
+void f_pint(stack_t **head, unsigned int count);
+void f_swap(stack_t **head, unsigned int count);
+void f_add(stack_t **head, unsigned int count);
+void f_nop(stack_t **head, unsigned int count);
 
 #endif

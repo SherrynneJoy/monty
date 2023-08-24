@@ -15,9 +15,14 @@ int execute(char *lineptr, stack_t **stack, unsigned int count, FILE *fp)
 {
 	instruction_t ops[] = {
 		{"push", f_push}, {"pall", f_pall},
+		{"pint", f_pint},
+		{"pop", f_pop},
+		{"swap", f_swap},
+		{"add", f_add},
+		{"nop", f_nop},
 		{NULL, NULL}
 	};
-	unsigned int i;
+	unsigned int i = 0;
 	char *ptr;
 
 	ptr = strtok(lineptr, " \n\t");
@@ -37,7 +42,7 @@ int execute(char *lineptr, stack_t **stack, unsigned int count, FILE *fp)
 		fprintf(stderr, "L%d: unknown instruction %s\n", count, ptr);
 		fclose(fp);
 		free(lineptr);
-		free(*stack);
+		freestack(*stack);
 		exit(EXIT_FAILURE);
 	}
 	return (1);
