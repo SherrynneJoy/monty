@@ -11,8 +11,8 @@ void addnode(stack_t **head, int n)
 	new = malloc(sizeof(stack_t));
 	if (!new)
 	{
-		perror("Memory Allocation");
-		exit(0);
+		fprintf(stderr, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
 	}
 	if (temp != NULL)
 		temp->prev = new;

@@ -14,8 +14,7 @@
 int execute(char *lineptr, stack_t **stack, unsigned int count, FILE *fp)
 {
 	instruction_t ops[] = {
-		{"push", f_push}, {"pall", f_pall},
-		{"pint", f_pint},
+		{"push", f_push}, {"pall", f_pall}, {"pint", f_pint},
 		{"pop", f_pop},
 		{"swap", f_swap},
 		{"add", f_add},
@@ -28,6 +27,7 @@ int execute(char *lineptr, stack_t **stack, unsigned int count, FILE *fp)
 	ptr = strtok(lineptr, " \n\t");
 	if (ptr && ptr[0] == '#')
 		return (0);
+	comm.arg = strtok(NULL, " \n\t");
 	while (ops[i].opcode && ptr)
 	{
 		if (strcmp(ptr, ops[i].opcode) == 0)
