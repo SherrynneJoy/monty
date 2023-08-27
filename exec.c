@@ -16,6 +16,10 @@ void (*f_opcodes(char *opcode))(stack_t **stack, unsigned int line_no)
 		{"swap", f_swap},
 		{"add", f_add},
 		{"nop", f_nop},
+		{"sub", f_sub},
+		{"div", f_div},
+		{"mul", f_mul},
+		{"mod", f_mod},
 		{NULL, NULL}
 	};
 	int i = 0;
