@@ -77,5 +77,6 @@ void f_add(stack_t **head, unsigned int line_no);
 void f_nop(stack_t **head, unsigned int line_no);
 void freestack(stack_t *head);
 ssize_t getline(char **lineptr, size_t *n, FILE *stream);
+int fprintf(FILE *stream, const char *format, ...);
 
 #endif
