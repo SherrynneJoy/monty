@@ -1,8 +1,8 @@
 #ifndef MONTY_H
 #define MONTY_H
 
-#define  _POSIX_C_SOURCE >= 200809L
-#define  _GNU_SOURCE
+/*#define  _POSIX_C_SOURCE >= 200809L*/
+/*#define  _GNU_SOURCE*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -44,31 +44,38 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 /**
- * struct bus_s - used with stacks & queues
+ * struct data_s - struct containing data used
+ * @lineptr: gets a line
  * @arg: argument
  * @fp: file pointer
- * @lineptr: ptr to line
- * @lifi: int
- * Description: used with stacks and queues
-   */
-typedef struct bus_s
+ * @head: head ptr
+ * @num: line no
+ * @lifi: checks whether a struct is a stack/queue
+ */
+typedef struct data_s
 {
+	char *lineptr;
 	char *arg;
 	FILE *fp;
-	char *lineptr;
+	stack_t *head;
+	unsigned int num;
 	int lifi;
-} bus_t;
-extern bus_t comm;
-
-int execute(char *lineptr, stack_t **stack, unsigned int count, FILE *fp);
+} data_t;
+extern data_t data;
+void freedata(void);
+void getdata(FILE *fp);
+FILE *openfile(int argc, char *argv[]);
+void (*f_opcodes(char *opcode))(stack_t **stack, unsigned int line_no);
+stack_t *addnodeend(stack_t **head, int n);
+stack_t *addnode(stack_t **head, int n);
+void f_push(stack_t **head, unsigned int line_no);
+void f_pall(stack_t **head, unsigned int line_no);
+void f_pop(stack_t **head, unsigned int line_no);
+void f_pint(stack_t **head, unsigned int line_no);
+void f_swap(stack_t **head, unsigned int line_no);
+void f_add(stack_t **head, unsigned int line_no);
+void f_nop(stack_t **head, unsigned int line_no);
 void freestack(stack_t *head);
-void addnode(stack_t **head, int n);
-void f_push(stack_t **head, unsigned int count);
-void f_pall(stack_t **head, unsigned int count);
-void f_pop(stack_t **head, unsigned int count);
-void f_pint(stack_t **head, unsigned int count);
-void f_swap(stack_t **head, unsigned int count);
-void f_add(stack_t **head, unsigned int count);
-void f_nop(stack_t **head, unsigned int count);
+ssize_t getline(char **lineptr, size_t *n, FILE *stream);
 
 #endif

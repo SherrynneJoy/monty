@@ -2,21 +2,19 @@
 /**
  * f_pop - removes an item from a stack
  * @head: head ptr
- * @count:line no
+ * @line_no: line no
  */
-void f_pop(stack_t **head, unsigned int count)
+void f_pop(stack_t **head, unsigned int line_no)
 {
 	stack_t *temp;
 
-	if (*head == NULL)
+	if (head == NULL || *head == NULL)
 	{
-		fprintf(stderr, "L%d: can't pop an empty stack\n", count);
-		fclose(comm.fp);
-		free(comm.lineptr);
-		freestack(*head);
+		fprintf(stderr, "L%u: can't pop an empty stack\n", line_no);
+		freedata();
 		exit(EXIT_FAILURE);
 	}
 	temp = *head;
-	*head = temp->next;
+	(*head) = (*head)->next;
 	free(temp);
 }

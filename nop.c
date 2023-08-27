@@ -2,10 +2,10 @@
 /**
  * f_nop - does nth
  * @head: head ptr
- * @count: line no
+ * @line_no: line number
  */
-void f_nop(stack_t **head, unsigned int count)
+void f_nop(stack_t **head, unsigned int line_no)
 {
 	(void)head;
-	(void)count;
+	(void)line_no;
 }
