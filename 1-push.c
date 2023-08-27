@@ -4,39 +4,30 @@
 /**
  * f_push - adds an element to a stack
  * @head: head ptr
- * @count: line no
+ * @line_number: line no
  */
-void f_push(stack_t **head, unsigned int count)
+void f_push(stack_t **head, unsigned int line_number)
 {
-	int n, m = 0, flag = 0;
+	int n, m;
 
-	if (drive.arg)
+	if (!data.arg)
 	{
-		if (drive.arg[0] == '-')
-			m++;
-		for (; drive.arg[m] != '\0'; m++)
+		fprintf(stderr, "L%u: usage: push integer\n", line_number);
+		freedata();
+		exit(EXIT_FAILURE);
+	}
+	for (n = 0; data.arg[n] != '\0'; n++)
+	{
+		if (!isdigit(data.arg[n]) && data.arg[n] != '-')
 		{
-			if (drive.arg[m] > 57 || drive.arg[m] < 48)
-				flag = 1;
-		}
-		if (flag == 1)
-		{
-			fprintf(stderr, "L%d: usage: push integer\n", count);
-			fclose(drive.fp);
-			free(drive.lineptr);
-			freestack(*head);
+			fprintf(stderr, "L%u: usage: push integer\n", line_number);
 			exit(EXIT_FAILURE);
 		}
 	}
+	m = atoi(data.arg);
+
+	if (data.lifi == 1)
+		addnode(head, m);
 	else
-	{
-		fprintf(stderr, "L%d: usage: push integer\n", count);
-		fclose(drive.fp);
-		free(drive.lineptr);
-		freestack(*head);
-		exit(EXIT_FAILURE);
-	}
-	n = atoi(drive.arg);
-	if (drive.lifi == 0)
-		addnode(head, n);
+		addnode_end(head, m);
 }

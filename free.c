@@ -3,14 +3,13 @@
  * freestack - frees a stack
  * @head: head ptr
  */
-void freestack(stack_t *head)
+void freelist(stack_t *head)
 {
-	stack_t *temp = head;
+	stack_t *temp;
 
-	while (head)
+	while ((temp = head) != NULL)
 	{
-		temp = head->next;
-		free(head);
-		head = temp;
+		head = head->next;
+		free(temp);
 	}
 }

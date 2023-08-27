@@ -3,11 +3,11 @@
 /**
  * f_nop - does nothing
  * @head: a pointer to a pointer
- * @count: an integer
+ * @line_number: an integer
  * Return: nothing
  */
-void f_nop(stack_t **head, unsigned int count)
+void f_nop(stack_t **head, unsigned int line_number)
 {
 	(void)head;
-	(void)count;
+	(void)line_number;
 }

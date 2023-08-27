@@ -3,31 +3,25 @@
 /**
  * f_add - adds two nodes
  * @head: a pointer to a pointer
- * @count: an integer
+ * @line_number: an integer
  * Return: nothing
  */
-void f_add(stack_t **head, unsigned int count)
+void f_add(stack_t **head, unsigned int line_number)
 {
-	stack_t *temp;
-	int length = 0, m;
+	stack_t *temp = NULL;
+	int i = 0;
 
 	temp = *head;
-	while (temp)
+
+	for (; temp != NULL; temp = temp->next, i++)
+		;
+	if (i < 2)
 	{
-		temp = temp->next;
-		length++;
-	}
-	if (length < 2)
-	{
-		fprintf(stderr, "L%d: can't add, stack too short\n", count);
-		fclose(drive.fp);
-		free(drive.lineptr);
-		freestack(*head);
+		fprintf(stderr, "L%u: can't add, stack too short\n", line_number);
+		freedata();
 		exit(EXIT_FAILURE);
 	}
-	temp = *head;
-	m = temp->n + temp->next->n;
-	temp->next->n = m;
-	*head = temp->next;
-	free(temp);
+	temp = (*head)->next;
+	temp->n += (*head)->n;
+	f_pop(head, line_number);
 }

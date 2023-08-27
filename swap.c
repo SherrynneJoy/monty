@@ -4,30 +4,28 @@
 /**
  * f_swap - swaps the top two elements
  * @head: pointer to pointer
- * @count: an integer
+ * @line_number: an integer
  * Return: nothing
  */
-void f_swap(stack_t **head, unsigned int count)
+void f_swap(stack_t **head, unsigned int line_number)
 {
-	stack_t *temp;
-	int length, m = 0;
+	stack_t *temp = NULL;
+	int m = 0;
 
 	temp = *head;
-	while (temp)
+
+	for (; temp != NULL; temp = temp->next, m++)
+		;
+	if (m < 2)
 	{
-		temp = temp->next;
-		length++;
-	}
-	if (length < 2)
-	{
-		fprintf(stderr, "L%d: can't swap, stack too short\n", count);
-		fclose(drive.fp);
-		free(drive.lineptr);
-		freestack(*head);
+		fprintf(stderr, "L%u: can't swap, stack too short\n", line_number);
+		freedata();
 		exit(EXIT_FAILURE);
 	}
 	temp = *head;
-	m = temp->n;
-	temp->n = temp->next->n;
-	temp->next->n = m;
+	*head = (*head)->next;
+	temp->next = (*head)->next;
+	temp->prev = *head;
+	(*head)->next = temp;
+	(*head)->prev = NULL;
 }

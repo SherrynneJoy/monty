@@ -1,9 +1,6 @@
 #ifndef MONTY_H
 #define MONTY_H
 
-#define  _POSIX_C_SOURCE >= 200809L
-#define  _GNU_SOURCE
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -57,18 +54,26 @@ typedef struct bus_s
 	FILE *fp;
 	char *lineptr;
 	int lifi;
-} bus_t;
-extern bus_t drive;
+	unsigned int num;
+	stack_t *head;
+} data_t;
+extern data_t data;
 
-int execute(char *lineptr, stack_t **stack, unsigned int count, FILE *fp);
-void freestack(stack_t *head);
-void addnode(stack_t **head, int n);
-void f_push(stack_t **head, unsigned int count);
-void f_pall(stack_t **head, unsigned int count);
-void f_pint(stack_t **head, unsigned int count);
-void f_pop(stack_t **head, unsigned int count);
-void f_swap(stack_t **head, unsigned int count);
-void f_add(stack_t **head, unsigned int count);
-void f_nop(stack_t **head, unsigned int count);
-void f_stack(stack_t **head, unsigned int count);
+ssize_t getline(char **lineptr, size_t *n, FILE *stream);
+int fprintf(FILE *stream, const char *format, ...);
+stack_t *addnode_end(stack_t **head, int n);
+stack_t *addnode(stack_t **head, int n);
+void freelist(stack_t *head);
+void freedata(void);
+void get_data(FILE *fp);
+FILE *open_file(int argc, char *argv[]);
+int main(int argc, char *argv[]);
+void f_push(stack_t **head, unsigned int line_number);
+void f_pall(stack_t **head, unsigned int line_number);
+void f_pint(stack_t **head, unsigned int line_number);
+void (*f_opecodes(char *opcode))(stack_t **stack, unsigned int line_number);
+void f_swap(stack_t **head, unsigned int line_number);
+void f_nop(stack_t **head, unsigned int line_number);
+void f_add(stack_t **head, unsigned int line_number);
+void f_pop(stack_t **head, unsigned int line_number);
 #endif

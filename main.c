@@ -4,7 +4,54 @@
 #include <fcntl.h>
 #include <stddef.h>
 #include <stdlib.h>
-bus_t drive  = {NULL, NULL, NULL, 0};
+
+data_t data;
+
+/**
+ * freedata - frees the data struct
+ */
+void freedata(void)
+{
+	freelist(data.head);
+	free(data.lineptr);
+	fclose(data.fp);
+}
+/**
+ * get_data - used with the global variable
+ * @fp: a file descriptor
+ */
+void get_data(FILE *fp)
+{
+	data.arg = NULL;
+	data.fp = fp;
+	data.lineptr = NULL;
+	data.lifi = 1;
+	data.head = NULL;
+	data.num = 1;
+}
+/**
+ * open_file - opens a file
+ * @argc: argument count
+ * @argv: argument vector
+ * Return: file pointer
+ */
+FILE *open_file(int argc, char *argv[])
+{
+	FILE *fp;
+
+	if (argc < 2)
+	{
+		fprintf(stderr, "USAGE: monty file\n");
+		exit(EXIT_FAILURE);
+	}
+	fp = fopen(argv[1], "r");
+	if (fp == NULL)
+	{
+		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
+		exit(EXIT_FAILURE);
+	}
+	return (fp);
+}
 /**
  * main - main file
  * @argc: argument count
@@ -13,38 +60,34 @@ bus_t drive  = {NULL, NULL, NULL, 0};
  */
 int main(int argc, char *argv[])
 {
-	char *lineptr = NULL;
-	size_t n = 0;
-	ssize_t is_read = 1;
+	void (*f)(stack_t **stack, unsigned int line_number);
+	/*char *lineptr = NULL;*/
+	size_t n = 300;
+	ssize_t is_read = 0;
 	FILE *fp;
-	unsigned int count = 0;
-	stack_t *stack = NULL;
+	char *lines[2] = {NULL, NULL};
 
-	if (argc != 2)
+	fp = open_file(argc, argv);
+	get_data(fp);
+	is_read = getline(&data.lineptr, &n, fp);
+	while (is_read != -1)
 	{
-		fprintf(stderr, "USAGE: monty file\n");
-		exit(EXIT_FAILURE);
-	}
-	fp = fopen(argv[1], "r");
-	drive.fp = fp;
-	if (fp == NULL)
-	{
-		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
-		exit(EXIT_FAILURE);
-	}
-	while (is_read > 0)
-	{
-		is_read = getline(&lineptr, &n, fp);
-		drive.lineptr = lineptr;
-		count++;
-		if (is_read > 0)
+		lines[0] = strtok(data.lineptr, " \t\n");
+		if (lines[0] && lines[0][0] != '#')
 		{
-			execute(lineptr, &stack, count, fp);
+			f = f_opecodes(lines[0]);
+			if (f == NULL)
+			{
+				fprintf(stderr, "L%u: unknown instruction %s\n", data.num, lines[0]);
+				freedata();
+				exit(EXIT_FAILURE);
+			}
+			data.arg = strtok(NULL, " \t\n");
+			f(&data.head, data.num);
 		}
-		free(lineptr);
+		is_read = getline(&data.lineptr, &n, fp);
+		data.num++;
 	}
-	freestack(stack);
-	fclose(fp);
-
+	freedata();
 	return (0);
 }

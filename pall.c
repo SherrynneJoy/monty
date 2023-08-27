@@ -3,13 +3,13 @@
 /**
  * f_pall - prints everything
  * @head: a pointer to a pointer
- * @count: an integer
+ * @line_number: an integer
  * Return: nothing
  */
-void f_pall(stack_t **head, unsigned int count)
+void f_pall(stack_t **head, unsigned int line_number)
 {
 	stack_t *temp;
-	(void)count;
+	(void)line_number;
 
 	temp = (*head);
 	if (temp == NULL)
