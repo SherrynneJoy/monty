@@ -79,6 +79,7 @@ void f_sub(stack_t **head, unsigned int line_no);
 void f_div(stack_t **head, unsigned int line_no);
 void f_mul(stack_t **head, unsigned int line_no);
 void f_mod(stack_t **head, unsigned int line_no);
+void f_pchar(stack_t **head, unsigned int line_no);
 void freestack(stack_t *head);
 ssize_t getline(char **lineptr, size_t *n, FILE *stream);
 int fprintf(FILE *stream, const char *format, ...);
